@@ -1,0 +1,22 @@
+[workspace]
+members=["examples/fullstack-auth"]
+resolver = "2"
+
+[workspace.dependencies]
+dioxus-web = "0.6.0"
+dioxus = "0.6.0"
+dioxus-fullstack = "0.6.0"
+dioxus-cli-config="0.6.0"
+axum="0.8.1"
+tokio = "1.43.0"
+tower-http = "0.6.2"
+http = "1.2.0"
+tower = "0.5.2"
+serde = "1.0.217"
+anyhow = "1.0.95"
+axum_session = "0.16.0"
+axum_session_auth = "0.16.0"
+
+[[examples]]
+name = "fullstack-auth"
+path = "examples/fullstack-auth"
