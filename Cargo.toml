@@ -14,9 +14,6 @@ http = "1.2.0"
 tower = "0.5.2"
 serde = "1.0.217"
 anyhow = "1.0.95"
-axum_session = "0.16.0"
-axum_session_auth = "0.16.0"
+#axum_session = "0.16.0"
+#axum_session_auth = "0.16.0"
 
-[[examples]]
-name = "fullstack-auth"
-path = "examples/fullstack-auth"

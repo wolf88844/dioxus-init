@@ -3,6 +3,7 @@
 #[cfg(feature = "server")]
 mod auth;
 
+use axum_session::SessionAnyPool;
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -21,7 +22,6 @@ fn main() {
         use axum_session::SessionConfig;
         use axum_session::SessionStore;
         use axum_session_auth::AuthConfig;
-        use axum_session_auth::SessionSqlitePool;
 
         tokio::runtime::Runtime::new()
             .unwrap()
@@ -29,7 +29,7 @@ fn main() {
                 let pool = connect_to_database().await;
                 let session_config = SessionConfig::default().with_table_name("test_table");
                 let auth_config = AuthConfig::<i64>::default().with_anonymous_user_id(Some(1));
-                let session_store = SessionStore::<SessionSqlitePool>::new(
+                let session_store = SessionStore::<SessionAnyPool>::new(
                     Some(pool.clone().into()),
                     session_config,
                 )
@@ -105,22 +105,22 @@ pub async fn get_user_name() -> Result<String, ServerFnError> {
 #[server]
 pub async fn login() -> Result<(), ServerFnError> {
     let auth = auth::get_session().await?;
-    auth.login_USER(2);
+    auth.login_user(2);
     Ok(())
 }
 
 #[server]
 pub async fn get_user_permissions() -> Result<String, ServerFnError> {
-    let method = execute().await?;
+    let method = extract().await?;
     let auth = auth::get_session().await?;
     let current_user = auth.current_user.clone().unwrap_or_default();
 
-    if !auxm_session_auth::Auth::<crate::auth::User, i64, sqlx::SqlitePool>::build(
+    if !axum_session_auth::Auth::<crate::auth::User, i64, sqlx::SqlitePool>::build(
         [axum::http::Method::POST],
         false,
     )
     .requires(axum_session_auth::Rights::any([
-        axum_session_auth::Rights::permissions("Category::View"),
+        axum_session_auth::Rights::permission("Category::View"),
         axum_session_auth::Rights::permission("Admin::View"),
     ]))
     .validate(&current_user, &method, None)

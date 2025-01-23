@@ -8,7 +8,7 @@ use axum::{
     routing::get,
     Router,
 };
-use axum_session::{SessionConfig,SessionLayer,SessionSqlitePool,SessionStore};
+use axum_session::{SessionConfig,SessionLayer,SessionStore,SessionAnyPool};
 use axum_session_auth::*;
 use core::pin::Pin;
 use dioxus_fullstack::prelude::*;
@@ -194,7 +194,7 @@ pub async fn connect_to_database() -> SqlitePool {
 pub type Session = axum_session_auth::AuthSession<
     crate::auth::User,
     i64,
-    axum_session_auth::SessionSqltePool,
+    axum_session_auth::SessionAnyPool,
     sqlx::SqlitePool,
 >;
 
